@@ -17,17 +17,16 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      # Compile LaTeX documents in logic_v1
-      - name: Compile LaTeX in logic_v1
+      # Compile LaTeX documents in both logic_v1 and logic_v2
+      - name: Compile LaTeX documents
         run: |
-          cd logic_v1
-          latexmk -pdf -interaction=nonstopmode -halt-on-error -file-line-error *.tex
-
-      # Compile LaTeX documents in logic_v2
-      - name: Compile LaTeX in logic_v2
-        run: |
-          cd logic_v2
-          latexmk -pdf -interaction=nonstopmode -halt-on-error -file-line-error *.tex
+          for dir in logic_v1 logic_v2; do
+            cd $dir
+            mkdir -p output
+            latexmk -pdf -interaction=nonstopmode -halt-on-error -file-line-error *.tex
+            mv *.pdf output/
+            cd ..
+          done
 
       # Create GitHub release with PDFs
       - name: Create Release
@@ -35,8 +34,8 @@ jobs:
         uses: softprops/action-gh-release@v1
         with:
           files: |
-            logic_v1/*.pdf
-            logic_v2/*.pdf
+            logic_v1/output/*.pdf
+            logic_v2/output/*.pdf
           tag_name: pdf-${{ github.sha }}
           name: PDF Build ${{ github.sha }}
           body: Automated PDF build from commit ${{ github.sha }}
