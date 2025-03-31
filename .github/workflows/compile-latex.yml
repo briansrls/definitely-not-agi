@@ -1,9 +1,11 @@
 name: Compile LaTeX Documents
 
 on:
-  push:
-    branches:
-      - '**' # Trigger on all branches
+  workflow_run:
+    workflows:
+      - Build LaTeX Docker Image
+    types:
+      - completed
 
 jobs:
   build-and-release:
