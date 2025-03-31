@@ -6,6 +6,9 @@ on:
       - Build LaTeX Docker Image
     types:
       - completed
+  push:
+    paths:
+      - '.github/workflows/compile-latex.yml' # Trigger on changes to this workflow file
 
 jobs:
   build-and-release:

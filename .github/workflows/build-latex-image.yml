@@ -5,6 +5,7 @@ on:
   push:
     paths:
       - 'Dockerfile'  # Only run when Dockerfile changes
+      - '.github/workflows/build-latex-image.yml' # Trigger on changes to this workflow file
 
 jobs:
   build-push-image:
