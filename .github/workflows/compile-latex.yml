@@ -46,7 +46,11 @@ jobs:
             logic_v2/output/*.pdf
           tag_name: pdf-${{ github.sha }}
           name: PDF Build ${{ github.sha }}
-          body: Automated PDF build from commit ${{ github.sha }}
+          body: |
+            Automated PDF build from commit ${{ github.sha }}
+            Organized PDFs:
+            - logic_v1/output/
+            - logic_v2/output/
           draft: false
           prerelease: false
         env:
