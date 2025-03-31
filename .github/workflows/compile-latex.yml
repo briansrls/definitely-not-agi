@@ -17,16 +17,21 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      # Compile LaTeX documents in both logic_v1 and logic_v2
-      - name: Compile LaTeX documents
+      # Compile LaTeX documents in logic_v1
+      - name: Compile LaTeX in logic_v1
         run: |
-          for dir in logic_v1 logic_v2; do
-            cd $dir
-            mkdir -p output
-            latexmk -pdf -interaction=nonstopmode -halt-on-error -file-line-error *.tex
-            mv *.pdf output/
-            cd ..
-          done
+          cd logic_v1
+          mkdir -p output
+          latexmk -pdf -interaction=nonstopmode -halt-on-error -file-line-error *.tex
+          mv *.pdf output/
+
+      # Compile LaTeX documents in logic_v2
+      - name: Compile LaTeX in logic_v2
+        run: |
+          cd logic_v2
+          mkdir -p output
+          latexmk -pdf -interaction=nonstopmode -halt-on-error -file-line-error *.tex
+          mv *.pdf output/
 
       # Create GitHub release with PDFs
       - name: Create Release
