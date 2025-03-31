@@ -28,7 +28,7 @@ jobs:
           cd logic_v1
           mkdir -p output
           latexmk -pdf -interaction=nonstopmode -halt-on-error -file-line-error *.tex
-          mv *.pdf output/
+          for file in *.pdf; do mv "$file" "output/logic_v1_$file"; done
 
       # Compile LaTeX documents in logic_v2
       - name: Compile LaTeX in logic_v2
@@ -36,7 +36,7 @@ jobs:
           cd logic_v2
           mkdir -p output
           latexmk -pdf -interaction=nonstopmode -halt-on-error -file-line-error *.tex
-          mv *.pdf output/
+          for file in *.pdf; do mv "$file" "output/logic_v2_$file"; done
 
       # Create GitHub release with PDFs
       - name: Create Release
