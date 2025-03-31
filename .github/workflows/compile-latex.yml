@@ -8,6 +8,8 @@ on:
       - completed
   push:
     paths:
+      - 'logic_v1/*.tex'
+      - 'logic_v2/*.tex'
       - '.github/workflows/compile-latex.yml' # Trigger on changes to this workflow file
 
 jobs:
