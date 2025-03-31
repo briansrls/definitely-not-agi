@@ -11,6 +11,9 @@ RUN apt-get update && \
     texlive-fonts-recommended \
     texlive-fonts-extra \
     texlive-science \
+    git config --global http.sslCAinfo || echo "No CA info set." \
+    sudo update-ca-certificates \
+    git config --global http.sslCAinfo /etc/ssl/certs/ca-certificates.crt \
     latexmk \
     make \
     git \
