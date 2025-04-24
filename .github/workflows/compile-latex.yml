@@ -8,9 +8,9 @@ on:
       - completed
   push:
     paths:
-      - 'logic_v1/*.tex'
-      - 'logic_v2/*.tex'
-      - '.github/workflows/compile-latex.yml' # Trigger on changes to this workflow file
+      - "logic_v1/*.tex"
+      - "logic_v2/*.tex"
+      - ".github/workflows/compile-latex.yml" # Trigger on changes to this workflow file
 
 jobs:
   build-and-release:
@@ -29,6 +29,7 @@ jobs:
           mkdir -p output
           latexmk -pdf -interaction=nonstopmode -halt-on-error -file-line-error *.tex
           for file in *.pdf; do mv "$file" "output/logic_v1_$file"; done
+          cd .. # Go back to the root directory
 
       # Compile LaTeX documents in logic_v2
       - name: Compile LaTeX in logic_v2
@@ -37,22 +38,23 @@ jobs:
           mkdir -p output
           latexmk -pdf -interaction=nonstopmode -halt-on-error -file-line-error *.tex
           for file in *.pdf; do mv "$file" "output/logic_v2_$file"; done
+          cd .. # Go back to the root directory
 
-      # Create GitHub release with PDFs
+      # Zip all compiled PDFs
+      - name: Zip All PDFs
+        run: zip -r definitely_not_agi.zip logic_v1/output logic_v2/output
+
+      # Create GitHub release with the combined zip file
       - name: Create Release
         id: create_release
         uses: softprops/action-gh-release@v1
         with:
-          files: |
-            logic_v1/output/*.pdf
-            logic_v2/output/*.pdf
+          files: all_pdfs.zip # Upload the combined zip file
           tag_name: pdf-${{ github.sha }}
           name: PDF Build ${{ github.sha }}
           body: |
             Automated PDF build from commit ${{ github.sha }}
-            Organized PDFs:
-            - logic_v1/output/
-            - logic_v2/output/
+            Includes all compiled PDFs in all_pdfs.zip.
           draft: false
           prerelease: false
         env:
