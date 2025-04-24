@@ -26,37 +26,35 @@ jobs:
       - name: Compile LaTeX in logic_v1
         run: |
           cd logic_v1
+          mkdir -p output
           latexmk -pdf -interaction=nonstopmode -halt-on-error -file-line-error *.tex
-          for file in *.pdf; do mv "$file" "logic_v1_$file"; done
+          for file in *.pdf; do mv "$file" "output/logic_v1_$file"; done
           cd .. # Go back to the root directory
 
       # Compile LaTeX documents in logic_v2
       - name: Compile LaTeX in logic_v2
         run: |
           cd logic_v2
+          mkdir -p output
           latexmk -pdf -interaction=nonstopmode -halt-on-error -file-line-error *.tex
-          for file in *.pdf; do mv "$file" "logic_v2_$file"; done
+          for file in *.pdf; do mv "$file" "output/logic_v2_$file"; done
           cd .. # Go back to the root directory
-
-      # Install zip utility
-      - name: Install zip
-        run: apt-get update && apt-get install -y zip
 
       # Zip all compiled PDFs
       - name: Zip All PDFs
-        run: zip -r definitely_not_agi.zip logic_v1 logic_v2
+        run: zip -r definitely_not_agi.zip logic_v1/*.pdf logic_v2/*.pdf
 
       # Create GitHub release with the combined zip file
       - name: Create Release
         id: create_release
         uses: softprops/action-gh-release@v1
         with:
-          files: definitely_not_agi.zip # Corrected filename
+          files: all_pdfs.zip # Upload the combined zip file
           tag_name: pdf-${{ github.sha }}
           name: PDF Build ${{ github.sha }}
           body: |
             Automated PDF build from commit ${{ github.sha }}
-            Includes all compiled PDFs in definitely_not_agi.zip. # Updated body text
+            Includes all compiled PDFs in all_pdfs.zip.
           draft: false
           prerelease: false
         env:
