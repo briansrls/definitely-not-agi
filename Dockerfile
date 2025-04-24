@@ -11,6 +11,7 @@ RUN apt-get update && \
   texlive-fonts-recommended \
   texlive-fonts-extra \
   texlive-science \
+  zip \
   latexmk \
   make \
   git \
