@@ -80,8 +80,7 @@ jobs:
           name: PDF Build ${{ github.sha }}
           body: |
             Automated PDF build from commit ${{ github.sha }}
-            Includes all compiled PDFs in definitely_not_agi.zip. # Updated body text
-          draft: false
+            Includes all compiled PDFs in definitely_not_agi.zip.
           prerelease: false
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
